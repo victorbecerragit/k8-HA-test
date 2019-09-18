@@ -93,7 +93,7 @@ echo " Create Node LB \n"
 gcloud compute --project=$project_ID instances create k8-lb --machine-type g1-small  \
 --scopes https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/compute \
 --metadata SELF_DESTRUCT_INTERVAL_MINUTES=$delete_vm \
-#--metadata-from-file startup-script=startup_script.sh \
+--metadata-from-file startup-script=startup_lb.sh \
 --image-family ubuntu-minimal-1804-lts  --image-project ubuntu-os-cloud --subnet default --zone us-central1-a
 
 

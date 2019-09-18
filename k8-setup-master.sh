@@ -6,13 +6,14 @@ set -x
 
 mkdir /etc/kubernetes/kubeadm
 touch /etc/kubernetes/kubeadm/kubeadm-config.yaml
+lb_ip=`gcloud compute instances list --project kube-project-223720 --filter="name~^k8-lb" --format='value(INTERNAL_IP)'`
 
 sh -c'cat > /etc/kubernetes/kubeadm/kubeadm-config.yaml <<EOF
 apiVersion: kubeadm.k8s.io/v1beta1
 kind: ClusterConfiguration
 kubernetesVersion: stable
 # REPLACE with `loadbalancer` IP
-controlPlaneEndpoint: "xx.xx.xx.xx:6443"
+controlPlaneEndpoint: "${lb_ip}:6443"
 networking:
   podSubnet: xx.xx.0.0/18
 EOF'
