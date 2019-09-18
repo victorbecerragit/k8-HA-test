@@ -65,8 +65,8 @@ gcloud config list
 echo "Default project : $project_ID \n"
 
 #Create Node Master
-echo " Create VM Master \n"
-gcloud compute --project=$project_ID instances create k8-master --machine-type n1-standard-1  \
+echo " Create VM Master0 \n"
+gcloud compute --project=$project_ID instances create k8-master0 --machine-type n1-standard-1  \
 --scopes https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/compute \
 --metadata SELF_DESTRUCT_INTERVAL_MINUTES=$delete_vm \
 --metadata-from-file startup-script=startup_script.sh \
@@ -77,8 +77,8 @@ gcloud compute --project=$project_ID instances create k8-master --machine-type n
 #--access-config-name "external-nat"
 
 #Create Control Plane node
-echo " Create VM Control Plane \n"
-gcloud compute --project=$project_ID instances create k8-controlplane1 --machine-type n1-standard-1  \
+echo " Create VM Master1 \n"
+gcloud compute --project=$project_ID instances create k8-master1 --machine-type n1-standard-1  \
 --scopes https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/compute \
 --metadata SELF_DESTRUCT_INTERVAL_MINUTES=$delete_vm \
 --metadata-from-file startup-script=startup_script.sh \

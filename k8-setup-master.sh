@@ -1,16 +1,27 @@
 #!/bin/bash
 
-##set -xe
 set -x
 
-export API_ADDR=`hostname -i`
-export DNS_DOMAIN="k8s.local"
-export POD_NET="10.244.0.0/16"
+### Setup the node master0 ###
 
-#Setup the node master ip as apiserver and define the pod-network for 10.244.0.0/16.
+mkdir /etc/kubernetes/kubeadm
+touch /etc/kubernetes/kubeadm/kubeadm-config.yaml
 
-sudo kubeadm init --apiserver-advertise-address=${API_ADDR} --pod-network-cidr=${POD_NET} --ignore-preflight-errors=all 
+sh -c'cat > /etc/kubernetes/kubeadm/kubeadm-config.yaml <<EOF
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: ClusterConfiguration
+kubernetesVersion: stable
+# REPLACE with `loadbalancer` IP
+controlPlaneEndpoint: "xx.xx.xx.xx:6443"
+networking:
+  podSubnet: xx.xx.0.0/18
+EOF'
 
+sudo kubeadm init \
+    --config=/etc/kubernetes/kubeadm/kubeadm-config.yaml \
+    --upload-certs
+
+if [[ $? -eq 0 ]]then;
 #Create admin user that will administer kubernetes
 sudo useradd -s /bin/bash -m k8-admin
 sudo usermod -aG sudo k8-admin
@@ -38,16 +49,9 @@ echo " Execute this command to create a new token : [kubeadm token create --ttl 
 
 EOF'
 
-#Change permission to normal user.
-sudo chown k8-admin:k8-admin /home/k8-admin/k8-setup.sh
-
-#Run the k8-setup.sh as regular user k8-admin
-sudo su k8-admin sh -c 'bash -x /home/k8-admin/k8-setup.sh'
-
-#Deploy the flannel pod network. 
+#Deploy the CNI-plugin network. 
 #The pod network is used for communication between nodes 
-sudo su k8-admin sh -c 'kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml'
-sudo systemctl restart kubelet
+sudo su k8-admin sh -c 'kubectl apply -f https://gist.githubusercontent.com/joshrosso/ed1f5ea5a2f47d86f536e9eee3f1a2c2/raw/dfd95b9230fb3f75543706f3a95989964f36b154/calico-3.5.yaml'
 
 #Wait 1 minute to check pods creation.
 sleep 60
@@ -55,3 +59,10 @@ sleep 60
 #Validate status of default pods created for kubernetes
 echo "Pods created by kubernetes: \n"
 sudo su k8-admin sh -c 'kubectl get pod -n kube-system'
+
+fi
+## login to master1 and join the node as controlplane.
+#sample:
+#kubeadm join 10.128.0.47:6443 --token q3lxwn.ix42lzrlu5czujzc \
+#    --discovery-token-ca-cert-hash sha256:47645a7c4930575bed1c2af9339dfe1e2f70bbb70b2e6fb494111e60cdd60d22 \
+#        --control-plane --certificate-key ddf116a6a59ad57a329a9d42f90c878cf0d1cec508048f0f769a495bc2424477
