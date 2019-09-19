@@ -8,7 +8,7 @@ mkdir /etc/kubernetes/kubeadm
 touch /etc/kubernetes/kubeadm/kubeadm-config.yaml
 lb_ip=`gcloud compute instances list --project kube-project-223720 --filter="name~^k8-lb" --format='value(INTERNAL_IP)'`
 
-sh -c'cat > /etc/kubernetes/kubeadm/kubeadm-config.yaml <<EOF
+cat > /etc/kubernetes/kubeadm/kubeadm-config.yaml <<EOF
 apiVersion: kubeadm.k8s.io/v1beta1
 kind: ClusterConfiguration
 kubernetesVersion: stable
@@ -16,13 +16,13 @@ kubernetesVersion: stable
 controlPlaneEndpoint: "${lb_ip}:6443"
 networking:
   podSubnet: xx.xx.0.0/18
-EOF'
+EOF
 
-sudo kubeadm init \
+sudo kubeadm init --ignore-preflight-errors=all \ 
     --config=/etc/kubernetes/kubeadm/kubeadm-config.yaml \
     --upload-certs
 
-if [[ $? -eq 0 ]]then;
+if [[ $? -eq 0 ]] ; then
 #Create admin user that will administer kubernetes
 sudo useradd -s /bin/bash -m k8-admin
 sudo usermod -aG sudo k8-admin
