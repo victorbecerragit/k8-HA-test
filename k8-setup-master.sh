@@ -7,7 +7,7 @@ set -x
 mkdir /etc/kubernetes/kubeadm
 touch /etc/kubernetes/kubeadm/kubeadm-config.yaml
 lb_ip=`gcloud compute instances list --project kube-project-223720 --filter="name~^k8-lb" --format='value(INTERNAL_IP)'`
-subnet=`echo lb_ip|awk -F'.' '{print $1"."$2}'`
+subnet=`echo $lb_ip|awk -F'.' '{print $1"."$2}'`
 
 cat > /etc/kubernetes/kubeadm/kubeadm-config.yaml <<EOF
 apiVersion: kubeadm.k8s.io/v1beta1

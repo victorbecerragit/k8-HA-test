@@ -2,9 +2,13 @@
 
 Env:
 master0
+
 master1
+
 lb
+
 worker1
+
 worker2
 
 #Deploy GCE VMs - Ubuntu 18.04, with starup-script, install docker & kubernetes, nginx. 
@@ -21,22 +25,23 @@ Also, this lab require enable login from gcloud CLI.
 
 1 - Deploy the vms from google CLI desktop
 
-$wget https://raw.githubusercontent.com/victorbecerragit/k8-test/master/k8-deploy-vms.sh
+$wget https://raw.githubusercontent.com/victorbecerragit/k8-HA-test/master/k8-deploy-vms.sh
 
 bash -x k8-deploy-vms.sh
 
-
 2 - Login to master0 & master1 and setup kubernet
 
-login ssh master
+login ssh master0
 $wget https://raw.githubusercontent.com/victorbecerragit/k8-test/master/k8-setup-master.sh
 
 bash -x k8-setup-master.sh
 
+Login to master1 and join to kubernet the node as controlplane.
+kubeadm join x.x.x.x ... --control-plane
 
 3 - Join each worker to the cluster (valid for 24h)
-login as root :
 
+To create a temporal cert run this from the master0.
 $kubeadm token create --ttl 24h --print-join-command
 
   - Join each worker to the cluster , login as root:
