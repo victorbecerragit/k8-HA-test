@@ -7,18 +7,19 @@ set -x
 mkdir /etc/kubernetes/kubeadm
 touch /etc/kubernetes/kubeadm/kubeadm-config.yaml
 lb_ip=`gcloud compute instances list --project kube-project-223720 --filter="name~^k8-lb" --format='value(INTERNAL_IP)'`
+subnet=`echo lb_ip|awk -F'.' '{print $1"."$2}'`
 
 cat > /etc/kubernetes/kubeadm/kubeadm-config.yaml <<EOF
 apiVersion: kubeadm.k8s.io/v1beta1
 kind: ClusterConfiguration
 kubernetesVersion: stable
-# REPLACE with `loadbalancer` IP
+# REPLACE with LB IP
 controlPlaneEndpoint: "${lb_ip}:6443"
 networking:
-  podSubnet: xx.xx.0.0/18
+  podSubnet: ${subnet}.0.0/18
 EOF
 
-sudo kubeadm init --ignore-preflight-errors=all \ 
+sudo kubeadm init --ignore-preflight-errors=all \
     --config=/etc/kubernetes/kubeadm/kubeadm-config.yaml \
     --upload-certs
 
