@@ -14,9 +14,9 @@ stream {
 	upstream stream_backend {
 		least_conn;
 		#REPLACE WITH master0 IP
-		server $master0_ip:6443;
+		server $master0_ip:6443 weight=5;
 		#REPLACE WITH master1 IP
-		server $master1_ip:6443;
+		server $master1_ip:6443 weight=5;
 	}
 	server {
 		listen        6443;
