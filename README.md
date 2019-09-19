@@ -30,7 +30,7 @@ bash -x k8-deploy-vms.sh
 2 - Login to master0 & master1 and setup kubernet
 
 login ssh master0
-$wget https://raw.githubusercontent.com/victorbecerragit/k8-test/master/k8-setup-master.sh
+$wget https://raw.githubusercontent.com/victorbecerragit/k8-HA-test/master/k8-setup-master.sh
 
 bash -x k8-setup-master.sh
 
