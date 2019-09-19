@@ -50,9 +50,15 @@ echo " Execute this command to create a new token : [kubeadm token create --ttl 
 
 EOF'
 
+#Change permission to normal user.
+sudo chown k8-admin:k8-admin /home/k8-admin/k8-setup.sh
+
+#Run the k8-setup.sh as regular user k8-admin
+sudo su k8-admin sh -c 'bash -x /home/k8-admin/k8-setup.sh'
+
 #Deploy the CNI-plugin network. 
-#The pod network is used for communication between nodes 
-sudo su k8-admin sh -c 'kubectl apply -f https://gist.githubusercontent.com/joshrosso/ed1f5ea5a2f47d86f536e9eee3f1a2c2/raw/dfd95b9230fb3f75543706f3a95989964f36b154/calico-3.5.yaml'
+#The pods network is used for communication between nodes 
+sudo su k8-admin sh -c 'kubectl apply -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml'
 
 #Wait 1 minute to check pods creation.
 sleep 60
