@@ -51,12 +51,16 @@ $kubeadm token create --ttl 24h --print-join-command
 Sample env deployed:
 
 k8-admin@k8-master0:~$ kubectl get nodes
+
 NAME         STATUS   ROLES    AGE     VERSION
+
 k8-master0   Ready    master   24m     v1.16.0
+
 k8-master1   Ready    master   21m     v1.16.0
+
 k8-worker1   Ready    <none>   8m38s   v1.16.0
+  
 k8-worker2   Ready    <none>   6m43s   v1.16.0
-k8-admin@k8-master0:~$
 
 
 
