@@ -21,7 +21,7 @@ stream {
 	server {
 		listen        6443;
 		proxy_pass    stream_backend;
-		proxy_timeout 3s;
+		proxy_timeout 40s;
 		proxy_connect_timeout 1s;
 	}
 
