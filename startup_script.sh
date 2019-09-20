@@ -2,10 +2,7 @@
 # https://cloud.google.com/logging/docs/agent/installation
 #
 curl -sSO https://dl.google.com/cloudagents/install-logging-agent.sh
-sudo bash install-logging-agent.sh
-
-curl -sSO https://dl.google.com/cloudagents/install-monitoring-agent.sh
-sudo bash install-monitoring-agent.sh
+bash install-logging-agent.sh
 
 # Make sure installed packages are up to date with all security patches.
 sudo apt-get -y update  && sudo apt-get -y upgrade
