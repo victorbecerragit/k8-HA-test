@@ -90,7 +90,7 @@ gcloud compute --project=$project_ID instances create k8-master1 --machine-type 
 
 #Create VM LoadBalancer
 echo " Create Node LB \n"
-gcloud compute --project=$project_ID instances create k8-lb --machine-type g1-micro  \
+gcloud compute --project=$project_ID instances create k8-lb --machine-type f1-micro  \
 --scopes https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/compute \
 --metadata SELF_DESTRUCT_INTERVAL_MINUTES=$delete_vm \
 --metadata-from-file startup-script=startup_lb.sh \
