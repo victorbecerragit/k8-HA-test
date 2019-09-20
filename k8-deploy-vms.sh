@@ -90,7 +90,7 @@ gcloud compute --project=$project_ID instances create k8-master1 --machine-type 
 
 #Create VM LoadBalancer
 echo " Create Node LB \n"
-gcloud compute --project=$project_ID instances create k8-lb --machine-type g1-small  \
+gcloud compute --project=$project_ID instances create k8-lb --machine-type g1-micro  \
 --scopes https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/compute \
 --metadata SELF_DESTRUCT_INTERVAL_MINUTES=$delete_vm \
 --metadata-from-file startup-script=startup_lb.sh \
@@ -99,7 +99,7 @@ gcloud compute --project=$project_ID instances create k8-lb --machine-type g1-sm
 
 #Create VM Worker1
 echo " Create Node Worker1 \n"
-gcloud compute --project=$project_ID instances create k8-worker1 --machine-type g1-small  \
+gcloud compute --project=$project_ID instances create k8-worker1 --custom-extensions --custom-cpu 1 --custom-memory 4  \
 --scopes https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/compute \
 --metadata SELF_DESTRUCT_INTERVAL_MINUTES=$delete_vm \
 --metadata-from-file startup-script=startup_script.sh \
@@ -111,7 +111,7 @@ gcloud compute --project=$project_ID instances create k8-worker1 --machine-type 
 
 #Create Node Worker2
 echo " Create VM Worker2 \n"
-gcloud compute --project=$project_ID instances create k8-worker2 --machine-type g1-small  \
+gcloud compute --project=$project_ID instances create k8-worker2 --custom-extensions --custom-cpu 1 --custom-memory 4  \
 --scopes https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/compute \
 --metadata SELF_DESTRUCT_INTERVAL_MINUTES=$delete_vm \
 --metadata-from-file startup-script=startup_script.sh \
