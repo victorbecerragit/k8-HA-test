@@ -80,7 +80,7 @@ gcloud compute --project=$project_ID instances create k8-master0 --labels env=ku
 #--access-config-name "external-nat"
 
 #Add tag
-gcloud compute instances add-tags k8-master0  --tags prod,web
+gcloud compute instances add-tags https://www.googleapis.com/compute/v1/projects/${project_ID}/zones/us-central1-a/instances/k8-master0  --tags prod,web
 
 #Create Control Plane node
 echo " Create VM Master1 \n"
@@ -95,7 +95,7 @@ gcloud compute --project=$project_ID instances create k8-master1 --labels env=ku
 #--access-config-name "external-nat"
 
 #Add tag
-gcloud compute instances add-tags k8-master1  --tags prod,web
+gcloud compute instances add-tags https://www.googleapis.com/compute/v1/projects/${project_ID}/zones/us-west1-a/instances/k8-master1  --tags prod,web
 
 #Create VM LoadBalancer
 echo " Create Node LB \n"
@@ -106,7 +106,7 @@ gcloud compute --project=$project_ID instances create k8-lb --labels env=kube --
 --image-family ubuntu-minimal-1804-lts  --image-project ubuntu-os-cloud --subnet default --zone us-central1-a
 
 #Add tag
-gcloud compute instances add-tags k8-lb  --tags prod,web
+gcloud compute instances add-tags https://www.googleapis.com/compute/v1/projects/${project_ID}/zones/us-central1-a/instances/k8-lb  --tags prod,web
 
 #Create VM Worker1
 echo " Create Node Worker1 \n"
@@ -121,7 +121,7 @@ gcloud compute --project=$project_ID instances create k8-worker1 --labels env=ku
 #--access-config-name "external-nat"
 
 #Add tag
-gcloud compute instances add-tags k8-worker1  --tags prod,web
+gcloud compute instances add-tags https://www.googleapis.com/compute/v1/projects/${project_ID}/zones/us-central1-b/instances/k8-worker1  --tags prod,web
 
 #Create Node Worker2
 echo " Create VM Worker2 \n"
@@ -136,11 +136,11 @@ gcloud compute --project=$project_ID instances create k8-worker2 --labels env=ku
 #--access-config-name "external-nat"
 
 #Add tag
-gcloud compute instances add-tags k8-worker2  --tags prod,web
+gcloud compute instances add-tags https://www.googleapis.com/compute/v1/projects/${project_ID}/zones/us-west1-c/instances/k8-worker2  --tags prod,web
 
 #Enable port 80 for http in "default" network, replace project for "your_project_name".
 gcloud compute --project=$project_ID firewall-rules create nginx-allow-https --direction=INGRESS \
---network=default --action=ALLOW --rules=tcp:80,8080 --source-ranges=0.0.0.0/0
+--network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0
 
 #List VMs created.
 gcloud compute instances list --project $project_ID
