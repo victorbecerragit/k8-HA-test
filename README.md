@@ -9,13 +9,16 @@ Env:
 -worker1
 -worker2
 
-#Deploy GCE VMs - Ubuntu 18.04, with starup-script, install docker & kubernetes, configure nginx load balancer. 
+#Deploy GCE VMs - Ubuntu 18.04, with starup-script, install docker & kubernetes, configure nginx load balancer.
+ 
 - k8-deploy-vms.sh
 
 #Configure docker and kubernetes on master
+
 - k8-setup-master.sh
 
 #Configure docker cgroup in all nodes
+
 - docker-daemon.sh
 
 This lab assume that you have already a user/service account configured on GCP.
@@ -27,17 +30,18 @@ $wget https://raw.githubusercontent.com/victorbecerragit/k8-HA-test/master/k8-de
 
 bash -x k8-deploy-vms.sh
 
-2 - Login to master0 & master1 and setup kubernet
+2 - Login to master0 and setup kubernet
 
 login ssh master0
 $wget https://raw.githubusercontent.com/victorbecerragit/k8-HA-test/master/k8-setup-master.sh
 
 bash -x k8-setup-master.sh
 
-Login to master1 and join to kubernet the node as controlplane.
+3- Login to master1 and join to kubernet the node as controlplane.
+
 kubeadm join x.x.x.x ... --control-plane
 
-3 - Join each worker to the cluster (valid for 24h)
+4 - Join each worker to the cluster (valid for 24h)
 
 To create a temporal cert run this from the master0.
 $kubeadm token create --ttl 24h --print-join-command
