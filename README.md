@@ -1,4 +1,4 @@
-# Lab scripts to deploy kubernetes HA on GCP using GCE.
+# Lab scripts to deploy kubernetes unmanaged HA (no GKE) on GCP using GCE.
 
 Env:
 
